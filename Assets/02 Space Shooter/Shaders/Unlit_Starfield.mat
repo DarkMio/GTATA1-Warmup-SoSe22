@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Unlit_Starfield
+  m_Shader: {fileID: 4800000, guid: 3b06074781a775a4d987dc20304733d6, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Brightness: 0.0005
+    - _DarkMatter: 0
+    - _DistFading: 0.393
+    - _FormularParameter: 0.58
+    - _Interpolate: 0.25
+    - _Interpolation: 2.03
+    - _Iterations: 12.5
+    - _Saturation: 0.92
+    - _Speed: 0.001
+    - _Tile: 0.33
+    - _VolumetricStepSize: 0.125
+    - _VolumetricSteps: 3.1
+    - _Zoom: 0.8
+    m_Colors:
+    - _Color: {r: 0.5510575, g: 0.69758147, b: 0.8122524, a: 0}
+    - _Offset: {r: -521.3591, g: -176.70792, b: 0, a: 0}
+  m_BuildTextureStacks: []
