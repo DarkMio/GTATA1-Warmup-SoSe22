@@ -393,7 +393,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &219317172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,7 +609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &504894333
 Transform:
   m_ObjectHideFlags: 0
@@ -1043,13 +1043,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89d022796ef043d3960bbe6bcc2fc359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 0.21, y: 0.21}
+  hasGameStarted: 0
   minMaxGameSpeed: {x: 2, y: 6}
-  currentGameSpeed: 1
   minMaxGridHeight: {x: -1, y: 0}
   spawnFirstRowLocation: -2.18
   rowPrefab: {fileID: -8351763743458199397, guid: 42b73a680ffe03847bf4c3a15d1a5448, type: 3}
-  hasGameStarted: 0
 --- !u!1 &1958417683
 GameObject:
   m_ObjectHideFlags: 0

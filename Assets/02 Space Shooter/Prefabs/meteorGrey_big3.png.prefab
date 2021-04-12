@@ -115,5 +115,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 6191181549215997480}
-  MovementObject: {fileID: 3298502195956750655}
+  movementObject: {fileID: 3298502195956750655}
   asteroidSize: 0

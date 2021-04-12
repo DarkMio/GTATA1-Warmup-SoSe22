@@ -35,7 +35,7 @@ namespace Scripts
             transform.position += movementVelocity * Time.deltaTime;
             transform.rotation *= quaternion.Euler(angularVelocity * (Time.deltaTime * Mathf.PI));
 
-            spriteRenderer.RepositionSpriteRendererInFrustum(Camera.current);
+            spriteRenderer.RepositionSpriteRendererInFrustum(Camera.main);
         }
 
         /// <summary>
