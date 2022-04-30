@@ -10,8 +10,11 @@ namespace Scripts
     /// </summary>
     public class RunCharacterController : MonoBehaviour
     {
+        public Animator animator,animator2;
         public Transform Transform => character;
+        public Transform Transform2 => character2;
         public SpriteRenderer CharacterSprite => characterSprite;
+        public SpriteRenderer CharacterSprite2 => characterSprite2;
         /// <summary>
         /// Since the Character controller takes responsibility for triggering Input events, it also emits an
         /// event when it does so
@@ -27,8 +30,8 @@ namespace Scripts
         /// <summary>
         /// We don't require anything else from the Character than its transform
         /// </summary>
-        [SerializeField] private Transform character;
-        [SerializeField] private SpriteRenderer characterSprite;
+        [SerializeField] private Transform character, character2;
+        [SerializeField] private SpriteRenderer characterSprite, characterSprite2;
         [SerializeField] private AnimationCurve jumpPosition;
         
         private bool canJump = true;
@@ -47,8 +50,11 @@ namespace Scripts
             if (jumpKeys.Any(x => Input.GetKeyDown(x)))
             {   // first we disable the jump, then start the Coroutine that handles the jump and invoke the event
                 canJump = false;
+                FindObjectOfType<AudioManager>().Play("Jump");
                 StartCoroutine(JumpRoutine());
                 onJump?.Invoke();
+                animator.SetBool("IsJumping", true);
+                animator2.SetBool("IsJumping2", true);
             }
         }
 
@@ -77,6 +83,7 @@ namespace Scripts
             var totalTime = 0f;
             // low position is assumed to be a (0, 0, 0)
             var highPosition = character.up * jumpHeight;
+            var highPosition2 = character2.up * jumpHeight;
             while (totalTime < jumpDuration)
             {
                 totalTime += Time.deltaTime;
@@ -84,10 +91,13 @@ namespace Scripts
                 var sampleTime = totalTime / jumpDuration;
                 // Lerp is a Linear Interpolation between a...b based on a value between 0...1
                 character.localPosition = Vector3.Lerp(Vector3.zero, highPosition, jumpPosition.Evaluate(sampleTime));
+                character2.localPosition = Vector3.Lerp(Vector3.zero, highPosition, jumpPosition.Evaluate(sampleTime));
                 // we enable jumping again after we're almost done to remove some "stuck" behaviour when landing down
                 if (sampleTime > 0.95f)
                 {
                     canJump = true;
+                    animator.SetBool("IsJumping", false);
+                    animator2.SetBool("IsJumping2",false);
                 }
                 // yield return null waits a single frame
                 yield return null;

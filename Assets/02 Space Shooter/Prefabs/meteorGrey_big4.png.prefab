@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 7142672915177396231}
   - component: {fileID: 5886959914120355035}
   - component: {fileID: -8837679870510400998}
+  - component: {fileID: -5970880583815152409}
   m_Layer: 0
   m_Name: meteorGrey_big4.png
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,6 +45,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -117,3 +119,19 @@ MonoBehaviour:
   spriteRenderer: {fileID: 7142672915177396231}
   movementObject: {fileID: 5886959914120355035}
   asteroidSize: 0
+--- !u!58 &-5970880583815152409
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7142672915177396232}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.49

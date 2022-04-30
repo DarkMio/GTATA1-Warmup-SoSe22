@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Scripts;
 
 namespace Scripts
 {
@@ -13,6 +14,8 @@ namespace Scripts
         [SerializeField] private float bulletSpeed;
         [SerializeField] [Range(0, 5)] private float lifetime;
         private SpriteRenderer sprite;
+        // declaring variable of Shipcontroller
+        ShipController Upgrade;
 
         private void Start()
         {
@@ -20,11 +23,21 @@ namespace Scripts
             Destroy(gameObject, lifetime);
             movement.Impulse(initialVelocity, Vector3.zero);
             if (_runGameController == null) _runGameController = FindObjectOfType<AsteroidGameController>();
+            //access value
+            Upgrade = FindObjectOfType<ShipController>();
         }
 
+        // make the laser goes faster after we took the 
         private void Update()
         {
+            if(Upgrade.Hit == false)
+            {
             movement.Impulse(transform.up * bulletSpeed * Time.deltaTime, Vector3.zero);
+            }
+            else if(Upgrade.Hit == true)
+            {
+            movement.Impulse(transform.up * bulletSpeed * Time.deltaTime*20, Vector3.zero);
+            }
         }
 
         /// <summary>

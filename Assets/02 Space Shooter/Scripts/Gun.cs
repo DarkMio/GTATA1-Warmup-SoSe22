@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Scripts;
 
 namespace Scripts
 {
@@ -7,12 +8,14 @@ namespace Scripts
     /// </summary>
     public class Gun : MonoBehaviour
     {
-        [SerializeField] private Laser laserPrefab;
+        [SerializeField] public Laser laserPrefab;
+        [SerializeField] public Laser laserPrefab2;
         private PlayerShip ship;
-
+        ShipController State;
         private void Start()
         {
             ship = GetComponent<PlayerShip>();
+            State = FindObjectOfType<ShipController>();
         }
 
         private void Update()
@@ -25,8 +28,17 @@ namespace Scripts
 
         private void Fire()
         {
+            Debug.Log(State.Hit);
+            if(State.Hit == false){
             laserPrefab.initialVelocity = ship.movementObject.CurrentVelocity;
             Instantiate(laserPrefab, transform.position, transform.rotation);
+        }
+            else if(State.Hit == true)
+        {
+            laserPrefab2.initialVelocity = ship.movementObject.CurrentVelocity;
+            Instantiate(laserPrefab2, transform.position, transform.rotation);
+        }
+        
         }
     }
 }

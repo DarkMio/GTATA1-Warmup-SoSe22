@@ -10,6 +10,8 @@ namespace Scripts
     /// </summary>
     public class AsteroidGameController : MonoBehaviour
     {
+        // variable to count how many asteroid got shot to win
+        public int Count=0;
         public Asteroid[] bigAsteroids;
         public Asteroid[] mediumAsteroids;
         public Asteroid[] smallAsteroids;
@@ -98,7 +100,6 @@ namespace Scripts
             {
                 return;
             }
-            
             // otherwise remove the asteroid from the tracked asteroid
             activeAsteroids.Remove(asteroid);
             var bounds = asteroid.spriteRenderer.bounds;
@@ -109,8 +110,11 @@ namespace Scripts
                 AsteroidSize.Medium => smallAsteroids,
                 _ => null
             };
+            // counting how many times it hits********************
+            Count++;
             // remote the asteroid gameobject with all its components
             Destroy(asteroid.gameObject);
+            
             // premature exit: we have no prefabs (ie: small asteroids exploding)
             if (prefabs == null)
             {

@@ -13,7 +13,7 @@ namespace Scripts
         private RectTransform rectTransform;
         private Rigidbody2D rigidBody;
         private int upgradeCollisionId;
-
+        public GameObject LoseScreen;
 
         /// <summary>
         /// FixedUpdate is a Unity runtime function called *every physics* frame
@@ -44,6 +44,8 @@ namespace Scripts
             if (balls.Count == 0)
             {
                 // maybe this is a good entry point for a loss system, similarly no bricks -> win
+                //GameOver screen
+                LoseScreen.SetActive(true);
                 Debug.Log("Game Over!");
                 Time.timeScale = 0f;
             }

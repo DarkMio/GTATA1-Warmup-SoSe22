@@ -18,6 +18,7 @@ namespace Scripts
             // calculating the advancement with deltaTime gets the advancement per unit of time
             // (which is in seconds)
             transform.position += transform.right * (speed * Time.deltaTime);
+            FindObjectOfType<AudioManager>().Play("Jump");
         }
     }
 }
