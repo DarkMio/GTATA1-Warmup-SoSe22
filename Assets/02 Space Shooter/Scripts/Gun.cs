@@ -9,7 +9,7 @@ namespace Scripts
     {
         [SerializeField] private Laser laserPrefab;
         private PlayerShip ship;
-
+      //  public GameObject[] laserPrefab;
         private void Start()
         {
             ship = GetComponent<PlayerShip>();

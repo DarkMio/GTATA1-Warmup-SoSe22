@@ -9,10 +9,13 @@ namespace Scripts
         [SerializeField] [Range(0, 1000)] private float speed;
         [SerializeField] [Range(0, 384)] private float pedalSize;
         [SerializeField] private List<Ball> balls;
+        [SerializeField] private GameObject background;
+        [SerializeField] private GameObject button;
         private CapsuleCollider2D collider;
         private RectTransform rectTransform;
         private Rigidbody2D rigidBody;
         private int upgradeCollisionId;
+        private WinLose winLose;
 
 
         /// <summary>
@@ -44,7 +47,15 @@ namespace Scripts
             if (balls.Count == 0)
             {
                 // maybe this is a good entry point for a loss system, similarly no bricks -> win
+                winLose.WinSetup(false);
+                button.SetActive(true);
                 Debug.Log("Game Over!");
+                Time.timeScale = 0f;
+            }
+            Debug.Log(GameObject.FindGameObjectsWithTag("Bricks").Length);
+            if(GameObject.FindGameObjectsWithTag("Bricks").Length <= 0){ //Change to 73 or 75 to test win condition
+                winLose.WinSetup(true);
+                button.SetActive(true);
                 Time.timeScale = 0f;
             }
         }
@@ -53,7 +64,9 @@ namespace Scripts
         {   // set some references once
             rigidBody = GetComponent<Rigidbody2D>();
             collider = GetComponent<CapsuleCollider2D>();
+            winLose = background.GetComponent<WinLose>();
             rectTransform = GetComponent<RectTransform>();
+            button.SetActive(false);
             upgradeCollisionId = LayerMask.NameToLayer("Upgrade");
         }
 

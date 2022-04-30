@@ -11,7 +11,6 @@ namespace Scripts
         public MovementObject movementObject;
         public AsteroidSize asteroidSize;
     }
-
     public enum AsteroidSize
     {
         Large,

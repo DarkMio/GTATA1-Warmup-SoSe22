@@ -23,8 +23,8 @@ namespace Scripts
         }
 
         private void Update()
-        {
-            movement.Impulse(transform.up * bulletSpeed * Time.deltaTime, Vector3.zero);
+        {           
+            movement.Impulse(transform.up * bulletSpeed * Time.deltaTime, Vector3.zero); 
         }
 
         /// <summary>

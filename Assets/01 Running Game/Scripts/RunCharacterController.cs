@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Scripts
 {
@@ -12,6 +13,7 @@ namespace Scripts
     {
         public Transform Transform => character;
         public SpriteRenderer CharacterSprite => characterSprite;
+        public Animator animator;
         /// <summary>
         /// Since the Character controller takes responsibility for triggering Input events, it also emits an
         /// event when it does so
@@ -30,15 +32,47 @@ namespace Scripts
         [SerializeField] private Transform character;
         [SerializeField] private SpriteRenderer characterSprite;
         [SerializeField] private AnimationCurve jumpPosition;
-        
+        //added after
+        public AudioSource audioSrc;
+        int totalCharacter=1;
+        public int currentCharacterIndex;
+        public GameObject[] charList;
+        public GameObject characters;
+        public GameObject currentChar;
+        public Button previousChar;
+        public Button nextChar;
+
         private bool canJump = true;
 
         /// <summary>
         /// Update is a Unity runtime function called *every rendered* frame before Rendering happens
         /// see: https://docs.unity3d.com/Manual/ExecutionOrder.html
         /// </summary>
+
+        void Start(){
+            totalCharacter=characters.transform.childCount; //get the number of chars avaible
+            charList= new GameObject[totalCharacter]; //setting the length
+            
+            for (int i=0; i<totalCharacter; i++)
+            {
+                charList[i]=characters.transform.GetChild(i).gameObject;
+                charList[i].SetActive(false);
+            }
+            charList[0].SetActive(true);
+            currentChar=charList[0];
+            currentCharacterIndex=0;
+            animator=charList[0].GetComponent<Animator>();//just charList[0] wont work because the context is in gameobject 
+            character=charList[0].transform;
+            characterSprite=charList[0].GetComponent<SpriteRenderer>();
+
+            Button prevBtn = previousChar.GetComponent<Button>();
+            Button nextBtn = nextChar.GetComponent<Button>();
+            prevBtn.onClick.AddListener(PrevClicked);
+            nextBtn.onClick.AddListener(NextClicked);
+        }
         private void Update()
         {
+            //Debug.Log("total char"+totalCharacter);
             if (!canJump)
             {
                 return;
@@ -47,11 +81,47 @@ namespace Scripts
             if (jumpKeys.Any(x => Input.GetKeyDown(x)))
             {   // first we disable the jump, then start the Coroutine that handles the jump and invoke the event
                 canJump = false;
+                audioSrc.Play();
                 StartCoroutine(JumpRoutine());
                 onJump?.Invoke();
+               animator.SetBool("isjumping", true);
+               //animator.SetBool("isjumping", false);
             }
         }
-
+       
+        void PrevClicked()
+    {
+        
+        Debug.Log("You have clicked the PREV!");
+        Debug.Log("BEFORE"+currentCharacterIndex);
+        charList[currentCharacterIndex].SetActive(false);
+        if(currentCharacterIndex==0){
+            currentCharacterIndex=totalCharacter-1;
+        }else{
+        currentCharacterIndex -=1;
+        }
+        Debug.Log("AFTER"+currentCharacterIndex);
+        charList[currentCharacterIndex].SetActive(true);
+        animator=charList[currentCharacterIndex].GetComponent<Animator>();//just charList[0] wont work because the context is in gameobject 
+            character=charList[currentCharacterIndex].transform;
+            characterSprite=charList[currentCharacterIndex].GetComponent<SpriteRenderer>();
+    }
+        void NextClicked()
+    {
+        Debug.Log("You have clicked the NEXT!");
+        Debug.Log("BEFORE"+currentCharacterIndex);
+        charList[currentCharacterIndex].SetActive(false);
+        if(currentCharacterIndex==2){
+            currentCharacterIndex=totalCharacter-totalCharacter;
+        }else{
+        currentCharacterIndex +=1;
+        }
+        Debug.Log("AFTER"+currentCharacterIndex);
+        charList[currentCharacterIndex].SetActive(true);
+        animator=charList[currentCharacterIndex].GetComponent<Animator>();//just charList[0] wont work because the context is in gameobject 
+            character=charList[currentCharacterIndex].transform;
+            characterSprite=charList[currentCharacterIndex].GetComponent<SpriteRenderer>();
+    }
         /// <summary>
         /// OnDrawGizmosSelected is a Unity editor function called when the attached GameObject is selected and used to
         /// display debugging information in the Scene view
@@ -88,7 +158,9 @@ namespace Scripts
                 if (sampleTime > 0.95f)
                 {
                     canJump = true;
+                    animator.SetBool("isjumping", false);
                 }
+                
                 // yield return null waits a single frame
                 yield return null;
             }

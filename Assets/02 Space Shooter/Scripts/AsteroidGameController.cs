@@ -13,16 +13,27 @@ namespace Scripts
         public Asteroid[] bigAsteroids;
         public Asteroid[] mediumAsteroids;
         public Asteroid[] smallAsteroids;
+       // public 
 
         [SerializeField] private Vector3 maximumSpeed, maximumSpin;
         [SerializeField] private PlayerShip playerShip;
         [SerializeField] private Transform spawnAnchor;
+        [SerializeField] private GameObject background; //Background for winlose screen
 
         private List<Asteroid> activeAsteroids;
         private Random random;
+        private int shipLifes; //ship lifes
+        private WinLoseScreen winLose; // winlose
+        private HealthPoint healthPoint;
+        
+        bool shipDestroyed=false; //check if destroyed
+
 
         private void Start()
         {
+            winLose=background.GetComponent<WinLoseScreen>();//added
+            healthPoint=FindObjectOfType<HealthPoint>();//added
+            shipLifes=5;
             activeAsteroids = new List<Asteroid>();
             random = new Random();
             // spawn some initial asteroids
@@ -31,6 +42,23 @@ namespace Scripts
                 SpawnAsteroid(bigAsteroids, Camera.main.OrthographicBounds());
             }
         }
+        //Update to check activeAsteroids, if 0 then game won
+        private void Update(){
+            healthPoint.onHit(shipLifes);
+
+            if(activeAsteroids.Count==0){
+                winLose.WinSetup(true);
+            }
+            if(shipDestroyed){
+                winLose.WinSetup(false);
+            }
+        }
+
+        //Health points increase if receive upgrade
+        public void HealthIncrease(){
+            shipLifes +=1;
+        }
+
 
         /// <summary>
         /// Behaviour to spawn an asteroid within the screen
@@ -111,26 +139,67 @@ namespace Scripts
             };
             // remote the asteroid gameobject with all its components
             Destroy(asteroid.gameObject);
+            
             // premature exit: we have no prefabs (ie: small asteroids exploding)
             if (prefabs == null)
             {
-                return;
+                return; 
             }
 
             // randomize two to six random asteroids
             var objectCountToSpawn = (int) (UnityEngine.Random.value * 4 + 2);
-            for (var i = 0; i < objectCountToSpawn; i++)
+            for (var i = 0; i < objectCountToSpawn; i++) // put i<0 to stop new smaller asteroid from spawning, jst for test
             {
                 SpawnAsteroid(prefabs, bounds);
             }
-        
+            
             // oh, also get rid of the laser now
             Destroy(laser.gameObject);
         }
 
         public void ShipIntersection(SpriteRenderer ship)
         {
-            // :thinking: this could be solved very similarly to a laser intersection
+            // :thinking: this could be solved very similarly to a laser intersection Hmmmmmmmm
+            var asteroid = activeAsteroids
+                .FirstOrDefault(x => x.GetComponent<SpriteRenderer>().bounds.Intersects(ship.bounds));
+
+            // premature exit: this ship hasn't hit anything
+            if (asteroid == null)
+            {
+                return;
+            }
+            shipLifes -=1;// reduce health everytime ship got hit by the asteroid
+            if(shipLifes>0)
+            {
+                    // otherwise remove the asteroid from the tracked asteroid
+                activeAsteroids.Remove(asteroid);
+                var bounds = asteroid.spriteRenderer.bounds;
+                // get the correct set of prefabs to spawn asteroids in place of the asteroid that now explodes
+                var prefabs = asteroid.asteroidSize switch
+                {
+                    AsteroidSize.Large => mediumAsteroids,
+                    AsteroidSize.Medium => smallAsteroids,
+                    _ => null
+                };
+                // remote the asteroid gameobject with all its components
+                Destroy(asteroid.gameObject);
+                // premature exit: we have no prefabs (ie: small asteroids exploding)
+                if (prefabs == null)
+                {
+                    return;
+                }
+                // randomize two to six random asteroids
+                var objectCountToSpawn = (int) (UnityEngine.Random.value * 4 + 2);
+                for (var i = 0; i < 0; i++) // put i<0 to stop new smaller asteroid from spawning, jst for test
+                {
+                    SpawnAsteroid(prefabs, bounds);
+                }
+            }else{
+                    // oh, also get rid of the ship now
+                Destroy(ship.gameObject); 
+                shipDestroyed=true;
+            }
+                       
         }
 
         private static float RandomPointOnLine(float min, float max)
